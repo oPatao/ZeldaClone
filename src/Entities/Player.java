@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
 
     public static boolean right, left, up, down,shift;
-    double speed = 2.0;
+    double speed = 1;
 
     private int frames, curAnimation,targetFrame = 10;
     private int directions = 3, RightDir=0, LeftDir=1, UpDir = 2, DownDir= 3;
@@ -47,7 +47,7 @@ public class Player extends Entity {
     }
     public void tick(){
         moved = false;
-        speed = 2.0;
+        speed = 1;
         targetFrame = 10;
 
         if(shift){

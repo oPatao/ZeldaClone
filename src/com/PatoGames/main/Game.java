@@ -18,7 +18,7 @@ import java.util.List;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     public static JFrame frame;
-    private final int WIDTH = 160, HEIGHT = 120, SCALE = 3;
+    private final int WIDTH = 240, HEIGHT = 128, SCALE = 4;
     private Thread thread;
     private boolean running = true;
     private BufferStrategy bs;
@@ -26,27 +26,29 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final BufferedImage background;
 
     public static World world;
-    public List<Entity> entities;
+    public static List<Entity> entities;
     public static Spritesheets spritesheets;
-    private Player player;
+    public static Player player;
 
     public Game() throws IOException {
         addKeyListener(this);
-        this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+        setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
 
-        background = new BufferedImage(WIDTH*SCALE, HEIGHT*SCALE, BufferedImage.TYPE_INT_RGB);
+        background = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
         spritesheets = new Spritesheets("/[SPRITESHEET]zeldacolne.png");
-        world = new World("/mapa.png");
-        player = new Player(0,0,16*SCALE,16*SCALE,spritesheets.getSpritesheet(48,0,16,16));
+
+        player = new Player(0,0,16,16,spritesheets.getSpritesheet(48,0,16,16));
         entities.add(player);
+
+        world = new World("/mapa.png");
     }
 
 
     public void initFrame() {
 
-        frame = new JFrame("Logica Games Graficos");
+        frame = new JFrame("ZELDATO");
         frame.add(this);
         frame.setResizable(false);
         frame.pack();
@@ -76,8 +78,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void tick(){
 
-        for (int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
+        for (Entity e : entities) {
             e.tick();
         }
 
@@ -92,7 +93,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
         Graphics g = background.getGraphics();
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0,WIDTH*SCALE,HEIGHT*SCALE);
+        g.fillRect(0, 0,WIDTH,HEIGHT);
 
 
         //Graphics2D g2d = (Graphics2D) g;
@@ -103,7 +104,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 
 
-        g.dispose();
+
         g = bs.getDrawGraphics();
         g.drawImage(background, 0, 0,WIDTH*SCALE, HEIGHT*SCALE, null);
 
