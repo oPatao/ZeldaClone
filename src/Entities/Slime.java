@@ -1,5 +1,6 @@
 package Entities;
 
+import World.Camera;
 import com.PatoGames.main.Game;
 
 import java.awt.*;
@@ -76,9 +77,9 @@ public class Slime extends Entity{
     public void render(Graphics g) {
         //g.drawImage(directions,this.getX(),this.getY(),null);
         if (directions == RightDir) {
-            g.drawImage(slimeEsquerda[curAnimation], x, y, this.width, this.height, null);
+            g.drawImage(slimeDireita[curAnimation], x - Camera.x,y - Camera.y, this.width , this.height, null);
         } else if (directions == LeftDir) {
-            g.drawImage(slimeDireita[curAnimation], x, y, this.width, this.height, null);
+            g.drawImage(slimeEsquerda[curAnimation], x - Camera.x,y - Camera.y, this.width, this.height, null);
         }
     }
 }

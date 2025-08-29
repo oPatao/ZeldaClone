@@ -38,7 +38,7 @@ public class World {
                     
                 } else if (pixelAtual == 0xFF4B692F) {
                     //grama com flor
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
                     
                 } else if (pixelAtual == 0xFF000000) {
                     //pedra/parede
@@ -49,26 +49,26 @@ public class World {
                     Game.player.setX(xx*16);
                     Game.player.setY(yy*16);
                     //player e grama simples
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
 
                 } else if (pixelAtual == 0xFFdf7126) {
                     Game.entities.add(new Slime(xx*16,yy*16,16,16, Entity.SLIME_EN));
                     //inimigo
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
                 } else if (pixelAtual == 0xFF8a6f30) {
                     //arma
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
                     Game.entities.add(new Slime(xx*16,yy*16,16,16, Entity.ESTILINGUE_EN));
 
                 }else if (pixelAtual == 0xFF524b24) {
                     //munição
                     Game.entities.add(new Municao(xx*16,yy*16,16,16, Entity.AMMO_EN));
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
 
                 }else if (pixelAtual == 0xFFac3232) {
                     //lifePlanta
                     Game.entities.add(new PlantaVida(xx*16,yy*16,16,16, Entity.PLANTAR_CURA_EN));
-                    tiles[xx+ (yy*WIDTH)] = new GramaFlorTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
+                    tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
                 }
                 else {
                     tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_SIMPLES, xx*16, yy*16);
@@ -80,8 +80,17 @@ public class World {
     }
 
     public void render(Graphics g) {
-        for(int xx = 0; xx < WIDTH; xx++){
-            for(int yy = 0; yy < HEIGHT; yy++){
+        int xstart = Camera.x >> 4;
+        int ystart = Camera.y >> 4;
+
+        int xfinal = xstart+ (Game.WIDTH >> 4);
+        int yfinal = ystart+ (Game.HEIGHT >> 4);
+
+        for(int xx = xstart; xx <= xfinal; xx++){
+            for(int yy = ystart ; yy <= yfinal; yy++){
+                if (xx < 0 || xx >= WIDTH || yy < 0 || yy >= HEIGHT){
+                 continue;
+                }
                 Tile tile = tiles[xx + (WIDTH*yy)];
                 tile.render(g);
             }

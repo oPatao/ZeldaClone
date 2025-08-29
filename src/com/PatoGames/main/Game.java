@@ -18,7 +18,8 @@ import java.util.List;
 public class Game extends Canvas implements Runnable, KeyListener {
 
     public static JFrame frame;
-    private final int WIDTH = 240, HEIGHT = 128, SCALE = 4;
+    public static final int WIDTH = 240,HEIGHT = 128;
+    public final int SCALE = 4;
     private Thread thread;
     private boolean running = true;
     private BufferStrategy bs;
@@ -184,6 +185,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.shift = false;
         }
     }
+
 
 
 }
