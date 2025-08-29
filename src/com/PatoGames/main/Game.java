@@ -1,4 +1,181 @@
 package com.PatoGames.main;
 
-public class Game {
+import Entities.*;
+import Graficos.Spritesheets;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Game extends Canvas implements Runnable, KeyListener {
+
+    public static JFrame frame;
+    private final int WIDTH = 160, HEIGHT = 120, SCALE = 3;
+    private Thread thread;
+    private boolean running = true;
+    private BufferStrategy bs;
+
+    private final BufferedImage background = new BufferedImage(WIDTH*SCALE, HEIGHT*SCALE, BufferedImage.TYPE_INT_RGB);
+
+    public List<Entity> entities;
+    public static Spritesheets spritesheets;
+    private Player player;
+
+    public Game() {
+        addKeyListener(this);
+        this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+        initFrame();
+        entities = new ArrayList<Entity>();
+        spritesheets = new Spritesheets("/[SPRITESHEET]zeldacolne.png");
+
+        player = new Player(0,0,16*SCALE,16*SCALE,spritesheets.getSpritesheet(48,0,16,16));
+        entities.add(player);
+    }
+
+
+    public void initFrame() {
+
+        frame = new JFrame("Logica Games Graficos");
+        frame.add(this);
+        frame.setResizable(false);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
+
+
+    public synchronized void start() {
+        thread = new Thread(this);
+        thread.start();
+        running = true;
+
+
+
+    }
+    public synchronized void stop() throws InterruptedException {
+        thread.join();
+        running = false;
+    }
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.start();
+    }
+
+    public void tick(){
+
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            e.tick();
+        }
+
+    }
+
+
+    public void render(){
+        BufferStrategy bs = this.getBufferStrategy();
+        if(bs == null){
+            this.createBufferStrategy(3);
+            return;
+        }
+        Graphics g = background.getGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0,WIDTH*SCALE,HEIGHT*SCALE);
+
+        //Graphics2D g2d = (Graphics2D) g;
+        for (Entity e : entities) {
+            e.render(g);
+        }
+
+
+
+        g.dispose();
+        g = bs.getDrawGraphics();
+        g.drawImage(background, 0, 0,WIDTH*SCALE, HEIGHT*SCALE, null);
+
+        bs.show();
+    }
+
+    @Override
+    public void run() {
+        long lastTime = System.nanoTime();
+        double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
+        double delta = 0;
+        int frames = 0;
+        double timer = System.currentTimeMillis();
+
+        while (running) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            if (delta >= 1) {
+                tick();
+                render();
+                frames++;
+                delta--;
+
+            }
+            if(System.currentTimeMillis() - timer >= 1000) {
+                System.out.println("FPS: " + frames);
+                frames = 0;
+                timer += 1000;
+            }
+
+        }
+        try {
+            stop();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            player.up = true;
+        }else if(e.getKeyCode() == KeyEvent.VK_S){
+            player.down = true;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_A){
+            player.left = true;
+        }else if(e.getKeyCode() == KeyEvent.VK_D){
+            player.right = true;
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+            player.shift = true;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            player.up = false;
+        }else if(e.getKeyCode() == KeyEvent.VK_S){
+            player.down = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_A){
+            player.left = false;
+        }else if(e.getKeyCode() == KeyEvent.VK_D){
+            player.right = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+            player.shift = false;
+        }
+    }
+
+
 }

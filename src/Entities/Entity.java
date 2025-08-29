@@ -1,13 +1,13 @@
-package entities;
+package Entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
 
     private BufferedImage sprites;
 
@@ -29,6 +29,10 @@ public class Entity {
     }
     public int getHeight() {
         return this.height;
+    }
+
+    public void tick(){
+
     }
 
     public void render(Graphics g) {
