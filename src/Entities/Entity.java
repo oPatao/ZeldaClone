@@ -1,5 +1,6 @@
 package Entities;
 
+import World.Camera;
 import com.PatoGames.main.Game;
 
 import java.awt.*;
@@ -52,6 +53,6 @@ public class Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(this.sprites, this.getX(), this.getY(),this.getWidth(),this.getHeight(),null);
+        g.drawImage(this.sprites, this.getX() - Camera.x, this.getY() - Camera.y,this.getWidth(),this.getHeight(),null);
     }
 }

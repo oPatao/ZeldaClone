@@ -1,5 +1,7 @@
 package Entities;
 
+import World.Camera;
+import World.World;
 import com.PatoGames.main.Game;
 
 import java.awt.*;
@@ -83,19 +85,22 @@ public class Player extends Entity {
                 }
             }
         }
+        Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
+        Camera.y =Camera.clamp( this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT );
+
 
     }
     public void render(Graphics g){
         //g.drawImage(directions,this.getX(),this.getY(),null);
         if(directions == RightDir){
-            g.drawImage(playerRight[curAnimation],x,y,this.width,this.height,null);
+            g.drawImage(playerRight[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height ,null);
         }else if(directions == LeftDir){
-            g.drawImage(playerLeft[curAnimation],x,y,this.width,this.height,null);
+            g.drawImage(playerLeft[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height,null);
         }
         if(directions == UpDir){
-            g.drawImage(playerUp[curAnimation],x,y,this.width,this.height,null);
+            g.drawImage(playerUp[curAnimation],x - Camera.x,y - Camera.y,this.width ,this.height ,null);
         }else if(directions == DownDir){
-            g.drawImage(playerDown[curAnimation],x,y,this.width,this.height,null);
+            g.drawImage(playerDown[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height ,null);
         }
     }
 }
