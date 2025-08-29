@@ -2,6 +2,7 @@ package com.PatoGames.main;
 
 import Entities.*;
 import Graficos.Spritesheets;
+import World.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +23,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private boolean running = true;
     private BufferStrategy bs;
 
-    private final BufferedImage background = new BufferedImage(WIDTH*SCALE, HEIGHT*SCALE, BufferedImage.TYPE_INT_RGB);
+    private final BufferedImage background;
 
+    public static World world;
     public List<Entity> entities;
     public static Spritesheets spritesheets;
     private Player player;
 
-    public Game() {
+    public Game() throws IOException {
         addKeyListener(this);
         this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
+
+        background = new BufferedImage(WIDTH*SCALE, HEIGHT*SCALE, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
         spritesheets = new Spritesheets("/[SPRITESHEET]zeldacolne.png");
-
+        world = new World("/mapa.png");
         player = new Player(0,0,16*SCALE,16*SCALE,spritesheets.getSpritesheet(48,0,16,16));
         entities.add(player);
     }
@@ -64,7 +69,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         thread.join();
         running = false;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Game game = new Game();
         game.start();
     }
@@ -89,7 +94,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,WIDTH*SCALE,HEIGHT*SCALE);
 
+
         //Graphics2D g2d = (Graphics2D) g;
+        world.render(g);
         for (Entity e : entities) {
             e.render(g);
         }
