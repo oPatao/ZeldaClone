@@ -101,12 +101,11 @@ public class Player extends Entity {
             PlantaVida e = Game.plantaVidas.get(i);
                 if(Entity.isCollide(this,e)) {
                     e.comida();
-                    }
                     return;
-
-            }
-
+                }
         }
+
+       }
 
 
     /*public boolean isColliding(){
