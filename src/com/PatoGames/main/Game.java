@@ -90,7 +90,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void tick(){
 
-        for (Entity e : entities) {
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
             e.tick();
         }
 
@@ -119,6 +120,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.dispose();
         g = bs.getDrawGraphics();
         g.drawImage(background, 0, 0,WIDTH*SCALE, HEIGHT*SCALE, null);
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        g.drawString(player.getAmmo() + " AMMO", 62*SCALE, 11*SCALE);
 
         bs.show();
     }
