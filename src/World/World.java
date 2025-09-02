@@ -1,9 +1,6 @@
 package World;
 
-import Entities.Entity;
-import Entities.Municao;
-import Entities.PlantaVida;
-import Entities.Slime;
+import Entities.*;
 import com.PatoGames.main.Game;
 
 import javax.imageio.ImageIO;
@@ -13,8 +10,9 @@ import java.io.IOException;
 
 public class World {
 
-    private Tile[] tiles;
+    public static Tile[] tiles;
     public static int WIDTH, HEIGHT;
+    public static final int TILE_SIZE = 16;
 
     public World(String path) throws IOException {
         BufferedImage mapa = ImageIO.read(getClass().getResource(path));
@@ -58,7 +56,7 @@ public class World {
                 } else if (pixelAtual == 0xFF8a6f30) {
                     //arma
                     tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
-                    Game.entities.add(new Slime(xx*16,yy*16,16,16, Entity.ESTILINGUE_EN));
+                    Game.entities.add(new Estilingue(xx*16,yy*16,16,16, Entity.ESTILINGUE_EN));
 
                 }else if (pixelAtual == 0xFF524b24) {
                     //munição
@@ -77,6 +75,25 @@ public class World {
             }
 
         }
+    }
+
+    public static boolean isFree(int xNext, int yNext){
+        int x1 = xNext/TILE_SIZE;
+        int y1 = yNext/TILE_SIZE;
+
+        int x2 = (xNext+TILE_SIZE - 1) / TILE_SIZE;
+        int y2 = yNext/TILE_SIZE;
+
+        int x3 = xNext/TILE_SIZE;
+        int y3 = (yNext+TILE_SIZE - 1) / TILE_SIZE;
+
+        int x4 = (xNext+TILE_SIZE - 1) / TILE_SIZE;
+        int y4 = (yNext+TILE_SIZE - 1) / TILE_SIZE;
+
+        return !(tiles[x1 + (y1*World.WIDTH)] instanceof PedraTile ||
+                tiles[x2 + (y2*World.WIDTH)] instanceof PedraTile ||
+                tiles[x3 + (y3*World.WIDTH)] instanceof PedraTile ||
+                tiles[x4 + (y4*World.WIDTH)] instanceof PedraTile);
     }
 
     public void render(Graphics g) {

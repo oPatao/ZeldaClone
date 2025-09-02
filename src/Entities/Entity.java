@@ -16,6 +16,7 @@ public class Entity {
     protected int y;
     protected int width;
     protected int height;
+    protected int maskX, maskY, maskWidth, maskHeight;
 
     private BufferedImage sprites;
 
@@ -50,6 +51,12 @@ public class Entity {
 
     public void tick(){
 
+    }
+    public static boolean isCollide(Entity e1, Entity e2) {
+        Rectangle e1Mask = new Rectangle(e1.getX(), e1.getY(), e1.getWidth(), e1.getHeight());
+        Rectangle e2Mask = new Rectangle(e2.getX(), e2.getY(), e2.getWidth(), e2.getHeight());
+
+        return e1Mask.intersects(e2Mask);
     }
 
     public void render(Graphics g) {

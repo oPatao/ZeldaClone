@@ -2,6 +2,7 @@ package com.PatoGames.main;
 
 import Entities.*;
 import Graficos.Spritesheets;
+import Graficos.UI;
 import World.World;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Game extends Canvas implements Runnable, KeyListener {
@@ -24,6 +26,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private boolean running = true;
     private BufferStrategy bs;
 
+    public static Random rand;
+
     private final BufferedImage background;
 
     public static World world;
@@ -31,10 +35,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Spritesheets spritesheets;
     public static Player player;
 
+    public UI ui;
+
     public Game() throws IOException {
+        rand = new Random();
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
         initFrame();
+        ui = new UI();
 
         background = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
@@ -103,9 +111,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
             e.render(g);
         }
 
+        ui.render(g);
 
-
-
+        g.dispose();
         g = bs.getDrawGraphics();
         g.drawImage(background, 0, 0,WIDTH*SCALE, HEIGHT*SCALE, null);
 
@@ -120,6 +128,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         double delta = 0;
         int frames = 0;
         double timer = System.currentTimeMillis();
+        requestFocus();
 
         while (running) {
             long now = System.nanoTime();
