@@ -90,11 +90,24 @@ public class Player extends Entity {
         }else{
             curAnimation = 1;
         }
+        checkItem();
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
         Camera.y =Camera.clamp( this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT );
 
 
     }
+    public void checkItem(){
+        for (int i = 0; i < Game.plantaVidas.size(); i++) {
+            PlantaVida e = Game.plantaVidas.get(i);
+                if(Entity.isCollide(this,e)) {
+                    e.comida();
+                    }
+                    return;
+
+            }
+
+        }
+
 
     /*public boolean isColliding(){
 

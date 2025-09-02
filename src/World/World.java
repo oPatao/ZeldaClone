@@ -65,7 +65,10 @@ public class World {
 
                 }else if (pixelAtual == 0xFFac3232) {
                     //lifePlanta
-                    Game.entities.add(new PlantaVida(xx*16,yy*16,16,16, Entity.PLANTAR_CURA_EN));
+                    PlantaVida plantaVida = new PlantaVida(xx*16,yy*16,16,16, Entity.PLANTAR_CURA_EN);
+                    plantaVida.setMask(3,2,9,7);
+                    Game.plantaVidas.add(plantaVida);
+                    Game.entities.add(plantaVida);
                     tiles[xx+ (yy*WIDTH)] = new GramaTile(Tile.TILE_GRAMA_FLOR, xx*16, yy*16);
                 }
                 else {

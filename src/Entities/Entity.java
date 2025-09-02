@@ -26,7 +26,13 @@ public class Entity {
         this.width = width;
         this.height = height;
         this.sprites = sprites;
+
+        this.maskX = 0;
+        this.maskY = 0;
+        this.maskWidth = width;
+        this.maskHeight = height;
     }
+
     public int getX() {
         return this.x;
     }
@@ -39,6 +45,14 @@ public class Entity {
     public int getHeight() {
         return this.height;
     }
+
+    public void setMask(int maskX, int maskY, int maskWidth, int maskHeight) {
+        this.maskX = maskX;
+        this.maskY = maskY;
+        this.maskWidth = maskWidth;
+        this.maskHeight = maskHeight;
+    }
+
 
     public int setX(int x) {
         this.x = x;
@@ -61,5 +75,7 @@ public class Entity {
 
     public void render(Graphics g) {
         g.drawImage(this.sprites, this.getX() - Camera.x, this.getY() - Camera.y,this.getWidth(),this.getHeight(),null);
+       /* g.setColor(Color.RED);
+        g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y,this.maskWidth,this.maskHeight);*/
     }
 }
