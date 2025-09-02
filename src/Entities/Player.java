@@ -7,6 +7,8 @@ import com.PatoGames.main.Game;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static World.World.isFree;
+
 public class Player extends Entity {
 
     public static boolean right, left, up, down,shift;
@@ -17,6 +19,7 @@ public class Player extends Entity {
     private BufferedImage[] playerRight, playerLeft, playerUp, playerDown;
 
     private boolean moved = false;
+    public static double life = 100, maxLife = 100;
 
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
@@ -53,24 +56,24 @@ public class Player extends Entity {
         targetFrame = 10;
 
         if(shift){
-            speed +=speed;
+            speed +=1 ;
             targetFrame /= 2;
         }
-        if(right){
+        if(right && isFree(this.getX()+ (int)(speed), this.getY())){
             moved = true;
             x += speed;
             directions = RightDir;
 
-        }else if(left){
+        }else if(left && isFree(this.getX() - (int)(speed), this.getY())){
             moved = true;
             x -= speed;
             directions = LeftDir;
         }
-        if(up){
+        if(up && isFree(this.getX(), this.getY() - (int)(speed))){
             moved = true;
             y -= speed;
             directions = UpDir;
-        }else if(down){
+        }else if(down && isFree(this.getX(),this.getY() + (int)(speed))){
             moved = true;
             y += speed;
             directions = DownDir;
@@ -84,12 +87,18 @@ public class Player extends Entity {
                     curAnimation = 0;
                 }
             }
+        }else{
+            curAnimation = 1;
         }
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
         Camera.y =Camera.clamp( this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT );
 
 
     }
+
+    /*public boolean isColliding(){
+
+    }*/
     public void render(Graphics g){
         //g.drawImage(directions,this.getX(),this.getY(),null);
         if(directions == RightDir){
