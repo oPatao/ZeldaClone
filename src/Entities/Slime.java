@@ -69,6 +69,7 @@ public class Slime extends Entity{
         } else if (isCollidingPlayer()) {
             if(Game.rand.nextInt(100) < 10 ) {
                 Game.player.life-= Game.rand.nextInt(2)+1;
+                Game.player.isDamaged = true;
             }
             if (Game.player.life <= 0) {
                 //System.exit(1);

@@ -14,9 +14,13 @@ public class Player extends Entity {
     public static boolean right, left, up, down,shift;
     double speed = 1;
 
-    private int frames, curAnimation,targetFrame = 10;
+    private int frames, curAnimation,targetFrame = 10,dmgFrames = 0;
     private int directions = 3, RightDir=0, LeftDir=1, UpDir = 2, DownDir= 3;
     private BufferedImage[] playerRight, playerLeft, playerUp, playerDown;
+    private BufferedImage playerDmg = Game.spritesheets.getSpritesheet(48,64,16,16);
+
+    public boolean isDamaged = false;
+
 
     private boolean moved = false;
     public static double life = 100, maxLife = 100;
@@ -91,6 +95,15 @@ public class Player extends Entity {
         }else{
             curAnimation = 1;
         }
+
+        if (isDamaged) {
+            this.dmgFrames++;
+            if(dmgFrames >= 15){
+                dmgFrames = 0;
+                isDamaged = false;
+            }
+        }
+
         checkPlanta();
         checkMunicao();
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
@@ -126,17 +139,21 @@ public class Player extends Entity {
     /*public boolean isColliding(){
 
     }*/
-    public void render(Graphics g){
+    public void render(Graphics g) {
         //g.drawImage(directions,this.getX(),this.getY(),null);
-        if(directions == RightDir){
-            g.drawImage(playerRight[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height ,null);
-        }else if(directions == LeftDir){
-            g.drawImage(playerLeft[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height,null);
-        }
-        if(directions == UpDir){
-            g.drawImage(playerUp[curAnimation],x - Camera.x,y - Camera.y,this.width ,this.height ,null);
-        }else if(directions == DownDir){
-            g.drawImage(playerDown[curAnimation],x - Camera.x,y - Camera.y,this.width,this.height ,null);
+        if (!isDamaged) {
+            if (directions == RightDir) {
+                g.drawImage(playerRight[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+            } else if (directions == LeftDir) {
+                g.drawImage(playerLeft[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+            }
+            if (directions == UpDir) {
+                g.drawImage(playerUp[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+            } else if (directions == DownDir) {
+                g.drawImage(playerDown[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+            }
+        }else{
+            g.drawImage(playerDmg, x - Camera.x, y - Camera.y, this.width, this.height, null);
         }
     }
 }
