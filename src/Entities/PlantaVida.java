@@ -17,14 +17,15 @@ public class PlantaVida extends Entity {
     }
     public void comida() {
         if (!foiComida) {
-            Player.life += 15;
+            Game.player.life += 15;
             this.foiComida = true;
-            if (Player.life >= Player.maxLife) {
-                Player.life = Player.maxLife;
+            if (Game.player.life >= Game.player.maxLife) {
+                Game.player.life = Game.player.maxLife;
             }
 
         }
     }
+
 
     public void render(Graphics g) {
         if(!foiComida){

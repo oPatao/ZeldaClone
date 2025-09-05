@@ -1,6 +1,7 @@
 package Graficos;
 
 import Entities.Player;
+import com.PatoGames.main.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,7 +15,7 @@ public class UI {
         g.setColor(Color.red);
         g.fillRect(x,y,50,3);
         g.setColor(Color.green);
-        g.fillRect(x,y,(int)((Player.life/Player.maxLife)*50),3);
+        g.fillRect(x,y,(int)((Game.player.life/Game.player.maxLife)*50),3);
 
     }
 }
