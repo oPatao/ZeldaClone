@@ -1,11 +1,14 @@
 package Entities;
 
+import Graficos.Spritesheets;
 import World.Camera;
 import World.World;
 import com.PatoGames.main.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static World.World.isFree;
 
@@ -23,7 +26,7 @@ public class Player extends Entity {
 
 
     private boolean moved = false;
-    public static double life = 100, maxLife = 100;
+    public double life = 100, maxLife = 100;
     private int ammo = 0;
 
 
@@ -109,7 +112,23 @@ public class Player extends Entity {
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
         Camera.y =Camera.clamp( this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT );
 
+        if (life <= 0) {
+            Game.entities.clear();
+            Game.entities = new ArrayList<Entity>();
+            Game.plantaVidas = new ArrayList<PlantaVida>();
+            Game.spritesheets = new Spritesheets("/[SPRITESHEET]zeldacolne.png");
 
+            Game.player = new Player(0,0,16,16,Game.spritesheets.getSpritesheet(48,0,16,16));
+            Game.entities.add(Game.player);
+
+
+            try {
+                Game.world = new World("/mapa.png");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return;
+        }
     }
     public void checkPlanta(){
         for (int i = 0; i < Game.plantaVidas.size(); i++) {
