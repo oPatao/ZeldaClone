@@ -24,6 +24,8 @@ public class Player extends Entity {
 
     public boolean isDamaged = false;
 
+    private boolean armado = false;
+
 
     private boolean moved = false;
     public double life = 100, maxLife = 100;
@@ -109,6 +111,10 @@ public class Player extends Entity {
 
         checkPlanta();
         checkMunicao();
+        if (!armado){
+            checkEstilingue();
+        }
+
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
         Camera.y =Camera.clamp( this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT );
 
@@ -130,6 +136,9 @@ public class Player extends Entity {
             return;
         }
     }
+
+
+
     public void checkPlanta(){
         for (int i = 0; i < Game.plantaVidas.size(); i++) {
             PlantaVida e = Game.plantaVidas.get(i);
@@ -154,6 +163,17 @@ public class Player extends Entity {
             }
         }
     }
+    public void checkEstilingue(){
+        for (int i = 0; i < Game.entities.size(); i++) {
+            Entity e = Game.entities.get(i);
+            if(e instanceof Estilingue) {
+                if (Entity.isCollide(this, e)) {
+                    armado = true;
+                    Game.entities.remove(e);
+                }
+            }
+        }
+    }
 
     /*public boolean isColliding(){
 
@@ -163,13 +183,26 @@ public class Player extends Entity {
         if (!isDamaged) {
             if (directions == RightDir) {
                 g.drawImage(playerRight[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+                if (armado){
+                    g.drawImage(Entity.ESTILINGUELADOS, 14 + x - Camera.x, 8 + y - Camera.y, 3,4, null);
+
+                }
             } else if (directions == LeftDir) {
                 g.drawImage(playerLeft[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+                if (armado){
+                    g.drawImage(Entity.ESTILINGUELADOS,x - Camera.x, 8 + y - Camera.y, 3,4, null);
+                }
             }
             if (directions == UpDir) {
                 g.drawImage(playerUp[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+                if (armado){
+                    g.drawImage(Entity.ESTILINGUEFrenteCostas, 14 + x - Camera.x, 9 + y - Camera.y, 3,4, null);
+                }
             } else if (directions == DownDir) {
                 g.drawImage(playerDown[curAnimation], x - Camera.x, y - Camera.y, this.width, this.height, null);
+                if (armado){
+                    g.drawImage(Entity.ESTILINGUEFrenteCostas,x - Camera.x, 9 + y - Camera.y, 3,4, null);
+                }
             }
         }else{
             g.drawImage(playerDmg, x - Camera.x, y - Camera.y, this.width, this.height, null);
