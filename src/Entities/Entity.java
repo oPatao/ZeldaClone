@@ -11,6 +11,8 @@ public class Entity {
     public static BufferedImage ESTILINGUE_EN = Game.spritesheets.getSpritesheet(80,0,16,16);
     public static BufferedImage AMMO_EN = Game.spritesheets.getSpritesheet(96,0,16,16);
     public static BufferedImage SLIME_EN = Game.spritesheets.getSpritesheet(112,0,16,16);
+    public static BufferedImage ESTILINGUEFrenteCostas = Game.spritesheets.getSpritesheet(32,64,3,4);
+    public static BufferedImage ESTILINGUELADOS = Game.spritesheets.getSpritesheet(35,64,3,4);
 
     protected int x;
     protected int y;
