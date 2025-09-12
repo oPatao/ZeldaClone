@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
     public static JFrame frame;
     public static final int WIDTH = 240,HEIGHT = 128;
@@ -34,6 +36,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static World world;
     public static List<Entity> entities;
     public static List<PlantaVida> plantaVidas;
+    public static List<Tiro> Tiros;
     public static Spritesheets spritesheets;
     public static Player player;
 
@@ -49,6 +52,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         background = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
         plantaVidas = new ArrayList<PlantaVida>();
+        Tiros = new ArrayList<Tiro>();
         spritesheets = new Spritesheets("/[SPRITESHEET]zeldacolne.png");
 
         player = new Player(0,0,16,16,spritesheets.getSpritesheet(48,0,16,16));
@@ -95,6 +99,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e = entities.get(i);
             e.tick();
         }
+        for (int i = 0; i < Tiros.size(); i++) {
+            Tiros.get(i).tick();
+
+        }
 
     }
 
@@ -114,6 +122,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         world.render(g);
         for (Entity e : entities) {
             e.render(g);
+        }
+        player.render(g);
+        for (int i = 0; i < Tiros.size(); i++) {
+            Tiros.get(i).render(g);
         }
 
         ui.render(g);
@@ -184,6 +196,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_SHIFT){
             player.shift = true;
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            player.atirando = true;
+        }
     }
 
     @Override
@@ -201,8 +216,32 @@ public class Game extends Canvas implements Runnable, KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_SHIFT){
             player.shift = false;
         }
+
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
