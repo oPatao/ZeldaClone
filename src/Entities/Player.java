@@ -14,7 +14,7 @@ import static World.World.isFree;
 
 public class Player extends Entity {
 
-    public static boolean right, left, up, down,shift;
+    public static boolean right, left, up, down,shift, atirando;
     double speed = 1;
 
     private int frames, curAnimation,targetFrame = 10,dmgFrames = 0;
@@ -25,11 +25,12 @@ public class Player extends Entity {
     public boolean isDamaged = false;
 
     private boolean armado = false;
+    private int ammo = 0;
 
 
     private boolean moved = false;
     public double life = 100, maxLife = 100;
-    private int ammo = 0;
+
 
 
     public Player(int x, int y, int width, int height, BufferedImage sprite) {
@@ -113,6 +114,25 @@ public class Player extends Entity {
         checkMunicao();
         if (!armado){
             checkEstilingue();
+        }
+        if (armado){
+            if (atirando && ammo >= 1 ) {
+                int dx = 0, dy = 0;
+                if (directions == RightDir) {
+                    dx = 1;
+                } else if (directions == LeftDir) {
+                    dx = -1;
+                }
+                if (directions == UpDir) {
+                    dy = -1;
+                } else if (directions == DownDir) {
+                    dy = 1;
+                }
+                Tiro tiros = new Tiro(this.getX(), this.getY(), 8, 8, Entity.AMMO_EN, dx, dy);
+                Game.Tiros.add(tiros);
+                ammo--;
+                atirando = false;
+            }
         }
 
         Camera.x =Camera.clamp( this.getX() -  (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH );
